@@ -1,5 +1,5 @@
 # Start script
-.start.bat
+start.bat
 
 # Tests
 htdocs/tests/
