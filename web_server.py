@@ -207,7 +207,7 @@ class WebServer(AbstractWebServer):
         elif content_type.lower() == 'application/x-www-form-urlencoded':
             post_data = self.rfile.read(content_length).decode('ascii')
             if len(post_data) < 1:
-                return {}
+                return (content_type.lower(), {})
             # Decoding URL encoded data
             return (content_type.lower(), utils.decode_URL_encoded_data(post_data, starting_index = 0))
         elif content_type.lower() == 'application/json':
