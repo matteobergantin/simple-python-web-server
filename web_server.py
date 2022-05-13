@@ -1,4 +1,5 @@
 from http.server import ThreadingHTTPServer
+from os import listdir
 from abstract_web_server import AbstractWebServer
 from pathlib import Path
 from sys import exit
@@ -43,8 +44,11 @@ class WebServer(AbstractWebServer):
                     # index file exists, good
                     self.broadcast_file(index_file_path)
                 else:
-                    # index file does not exist, less good
-                    self.send_error_code(404, self.default404)
+                    # index file does not exist
+                    if settings.DIRECTORY_LISTING:
+                        self.send_directory_listing(full_file_path)
+                    else:
+                        self.send_error_code(404, self.default404)
             else:
                 # Directory does not exist - 404
                 self.send_error_code(404, self.default404)
@@ -61,6 +65,33 @@ class WebServer(AbstractWebServer):
             else:
                 # This is NOT a directory NOR a file, therefore 404
                 self.send_error_code(404, self.default404)
+    def send_directory_listing(self, dir_path: str):
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/html')
+        self.end_headers()
+        # Minified HTML code of a vary basic html page
+        html_head = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=0.5"><title>FILES LIST</title><style>*{margin: none; padding: none; outline: none; border: none; box-shadow: none;}body{background: #272829;}#file-table{width: fit-content; min-width: 300px; height: 100%; color: white; text-align: left; font-family: sans-serif; font-size: 1rem;}.table-element > *{padding: 1rem;}.file-name{text-decoration: none;}</style></head><body><table id="file-table"><tr class="table-element"><th>Name</th><th>Size</th><th>Type</th></tr>'
+        html_tail = "</table></body></html>"
+        # The only default content is the ".." directory
+        html_body = '<tr class="table-element"><td><a class="file-name" href="..">..</a></td><td>--</td><td>DIR</td></tr>'
+        for entry in listdir(dir_path):
+            print(entry)
+            full_entry_path = dir_path + settings.DIRECTORY_SEPARATOR + entry
+            href = utils.urlencode(entry)
+            parsed_size = "?"
+            entry_type = "Unknown"
+            if utils.isdir(full_entry_path):
+                parsed_size = "--"
+                entry_type = "DIR"
+            elif utils.isfile(full_entry_path):
+                parsed_size = utils.parseFileSize(utils.filesize(full_entry_path))
+                entry_type = "FILE"
+            else:
+                # Ignore files/directories that cannot be accessed (for whatever reason)
+                continue
+            html_body += f'<tr class="table-element"><td><a class="file-name" href="{href}">{entry}</a></td><td>{parsed_size}</td><td>{entry_type}</td></tr>'
+        html_code = html_head + html_body + html_tail
+        self.wfile.write(bytes(html_code, 'utf-8'))
 
     def redirect(self, new_location: str):
         self.send_response(301)
@@ -137,7 +168,6 @@ class WebServer(AbstractWebServer):
                 if bytesRead is None or len(bytesRead) == 0:
                     # EOF reached
                     break
-
                 try:
                     self.wfile.write(bytesRead)
                 except ConnectionResetError:
@@ -221,6 +251,7 @@ class WebServer(AbstractWebServer):
             return (content_type.lower(), post_data)
         self.last_error = settings.ERROR_POST_EMPTY
         return (None, None)
+        
 
 if __name__ == '__main__':
     if (not utils.exists(settings.HTDOCS_DIR) or not utils.isdir(settings.HTDOCS_DIR)) and settings.ALLOW_FILE_ACCESS:

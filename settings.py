@@ -6,11 +6,12 @@ import views                                                # User code
 
 HOSTNAME          = "0.0.0.0"
 PORT              = 8000
-BASE_DIR          = str(Path(__file__).parent.absolute())        # Current directory
-HTDOCS_DIR        = BASE_DIR + DIRECTORY_SEPARATOR + "htdocs"    # "htdocs" directory path
-READING_SIZE      = 1024*1024                                    # The maximum amount of bytes to read from a file in a single read() function call, set this to -1 to read until EOF
-ALLOW_FILE_ACCESS = True                                         # If a file exists in the htdocs folder, should it be possible to access to it directly?
-INDEX_FILE_NAME   = "index.html"                                 # Index file name, "index.html" by default, used when trying to access directories
+BASE_DIR          = str(Path(__file__).parent.absolute())       # Current directory
+HTDOCS_DIR        = BASE_DIR + DIRECTORY_SEPARATOR + "htdocs"   # "htdocs" directory path
+READING_SIZE      = 1024*1024                                   # The maximum amount of bytes to read from a file in a single read() function call, set this to -1 to read until EOF
+ALLOW_FILE_ACCESS = True                                        # If a file exists in the htdocs folder, should it be possible to access to it directly?
+DIRECTORY_LISTING = True                                        # If set to True, this will allow people to have a simple interface to show files in a directory, if the index file of that directory does not exist 
+INDEX_FILE_NAME   = "index.html"                                # Index file name, "index.html" by default, used when trying to access directories
 
 # Tell the server which function to call when an error occurs
 # Keep in mind there is a default behaviour to errors, it's not mandatory to override these methods

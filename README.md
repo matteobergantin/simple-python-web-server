@@ -40,6 +40,7 @@ To configure the server edit the variables in the `settings.py` file, you can ch
 * `HTDOCS_DIR`: The path to the directory "htdocs", if you save any file to the directory specified here, the users can access them by specifying the path (unless the ALLOW_FILE_ACCESS variable is set to False)
 * `READING_SIZE`: When we want to send a file to the user we need to open it and read it, to do that we must divide the file in chunks, this is the chunk size (in bytes), set it to -1 to read all the file before sending it to the client (Note that this is a terrible idea for files of high dimension)
 * `ALLOW_FILE_ACCESS`: If this variable is set to False, no file inside HTDOCS_DIR will be accessed, instead the user will encounter a 401 (Unauthorized) error
+* `DIRECTORY_LISTING`: If set to True, users trying to access a directory which DOES NOT have an index file will see a simple File Explorer instead of receiving a 404 error
 * `INDEX_FILE_NAME`: The index file name, used to tell the server where to look for an index file when a directory is requested.
 * `error_handlers`: This is a list of `tuple[int, callable]` where `int` is the error code (expressed as an integer) and `callable` a callable object. `callable` will be called when an error of code `int` occurs
 * `urlpatterns`: This is a list of `tuple[str, callable]` where `str` is the url path and where `callable` is the function to be called when a request happens on that path

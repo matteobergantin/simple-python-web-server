@@ -1,4 +1,5 @@
-from os.path import exists, basename, isdir
+from math import floor
+from os.path import exists, basename, isdir, isfile
 from pathlib import Path
 from inspect import getsourcefile
 from urllib.parse import unquote as urldecode, quote as urlencode
@@ -118,3 +119,15 @@ def decode_URL_encoded_data(path: str, starting_index: int):
             # (That's how it's implemented in Apache)
             get_data[urldecode(raw_element[:equal_sign_index])] = urldecode(raw_element[equal_sign_index+1:])
     return get_data
+
+def parseFileSize(file_size: int, normalize: int = 2):
+    if file_size < 0:
+        return "NaN"
+    dims = ['bytes', 'KiB', 'MiB', 'GiB']
+    size_scale_factor = 1000
+    i = 0
+    while i < len(dims) and file_size >= size_scale_factor:
+        file_size /= 1024
+        i += 1
+    file_size = floor(file_size * (10**normalize)) / (10**normalize)
+    return f"{file_size} {dims[i]}"

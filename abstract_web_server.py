@@ -42,3 +42,6 @@ class AbstractWebServer(BaseHTTPRequestHandler, ABC):
     @abstractmethod
     def parse_post_data(self):
         pass
+    @abstractmethod
+    def send_directory_listing(self):
+        pass
