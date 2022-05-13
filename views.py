@@ -29,4 +29,4 @@ def handle401(ws: AbstractWebServer):
     ws.wfile.write(bytes("This is what happens when we get a 401 error code", 'utf-8'))
 
 def send401(ws: AbstractWebServer):
-    ws.send_error_code(500, ws.default500)          # ws.default500 is the function to call if there is no callback function defined in error_handlers
+    ws.send_error_code(401, ws.default401)          # ws.default401 is the function to call if there is no callback function defined in error_handlers
