@@ -1,3 +1,6 @@
+# Disclaimer
+This project is an extremely simple web server that implements very basic security features, it should not be used in production.
+
 # Introduction
 This is a simple Web Server implemented in Python using `TheadingHTTPServer` and inheriting by `BaseHTTPRequestHandler`.
 
