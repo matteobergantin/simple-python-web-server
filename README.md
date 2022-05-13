@@ -23,8 +23,8 @@ To specify a behaviour for specific URL paths, edit the `settings.py` file and a
 This project uses the http.server module for Python, it should be installed automatically with any Python3 distribution, so nothing should be installed beforehand.
 
 ## Downloading and running the Web Server
-* Clone the repository using `git clone ...`
-* Browse to the downloaded directory with `cd {directory name}`
+* Clone the repository using `git clone https://github.com/matteobergantin/simple-python-web-server.git`
+* Browse to the downloaded directory with `cd simple-python-web-server`
 * Run the webserver using the command `python3 web_server.py`
 
 # Configuration

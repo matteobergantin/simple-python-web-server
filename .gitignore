@@ -1,6 +1,3 @@
-# Batch scripts for Windows
-*.bat
-
 # Tests
 htdocs/tests/
 
