@@ -203,7 +203,7 @@ class WebServer(AbstractWebServer):
             content_length = int(self.headers['Content-Length'])
         except ValueError:
             self.last_error = settings.ERROR_POST_PARSE_CONTENT_LENGTH
-            return (None, None)
+            return None
         content_type, opt_dict = cgi.parse_header(self.headers['Content-Type'])
 
         if content_type.lower() == 'multipart/form-data':
@@ -235,7 +235,7 @@ class WebServer(AbstractWebServer):
             if len(post_data) < 1:
                 return {}
             # Decoding URL encoded data
-            return (content_type.lower(), utils.decode_URL_encoded_data(post_data, starting_index = 0))
+            return utils.decode_URL_encoded_data(post_data, starting_index = 0)
         elif content_type.lower() == 'application/json':
             post_data = self.rfile.read(content_length).decode('ascii')
             json_data = utils.json_decode(post_data)
