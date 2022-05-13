@@ -1,0 +1,16 @@
+body {
+    background-color: #272829;
+}
+
+h1, p {
+    font-family: Helvetica;
+    color: white;
+}
+
+h1 {
+    font-size: 32pt;
+}
+
+p {
+    font-size: 14pt;
+}

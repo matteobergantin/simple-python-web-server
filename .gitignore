@@ -1,0 +1,8 @@
+# Start script
+.start.bat
+
+# Tests
+htdocs/tests/
+
+# Cache
+__pycache__/
