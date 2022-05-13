@@ -1,5 +1,5 @@
-# Start script
-start.bat
+# Batch scripts for Windows
+*.bat
 
 # Tests
 htdocs/tests/
