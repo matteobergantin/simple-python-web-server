@@ -194,14 +194,10 @@ class WebServer(AbstractWebServer):
         return utils.decode_URL_encoded_data(self.path, question_mark_pos+1)
 
     def parse_post_data(self):
-        # This returns a tuple of type (str, str)
-        # The first string represents the Content-Type header
-        # The second one represents the actual parsed data
-        # If they're both None it means an error happened
-        # You can check what kind of error by checking the last_error variable
+        # Returns a dictionary representing the parsed data
         if self.headers['Content-Type'] is None:
             self.last_error = settings.ERROR_POST_NO_CONTENT_TYPE
-            return (None, None)
+            return None
         content_length = 0
         try:
             content_length = int(self.headers['Content-Length'])
@@ -215,7 +211,7 @@ class WebServer(AbstractWebServer):
                 opt_dict['boundary'] = bytes(opt_dict['boundary'], 'ascii')
             except KeyError:
                 self.last_error = settings.ERROR_POST_NO_BOUNDARY
-                return (None, None)
+                return None
             raw_post_data = cgi.parse_multipart(self.rfile, opt_dict)
 
             # cgi.parse_multipart will return dict[str, list]
@@ -233,11 +229,11 @@ class WebServer(AbstractWebServer):
                     parsed_post_data[post_key] = raw_post_data[post_key][len(raw_post_data[post_key])-1]
                 else:
                     parsed_post_data[post_key] = True
-            return (content_type.lower(), parsed_post_data)
+            return parsed_post_data
         elif content_type.lower() == 'application/x-www-form-urlencoded':
             post_data = self.rfile.read(content_length).decode('ascii')
             if len(post_data) < 1:
-                return (content_type.lower(), {})
+                return {}
             # Decoding URL encoded data
             return (content_type.lower(), utils.decode_URL_encoded_data(post_data, starting_index = 0))
         elif content_type.lower() == 'application/json':
@@ -245,12 +241,9 @@ class WebServer(AbstractWebServer):
             json_data = utils.json_decode(post_data)
             if json_data is None:
                 self.last_error = settings.ERROR_POST_PARSE_JSON
-            return (content_type.lower(), json_data)
-        elif content_type.lower() == 'text/plain':
-            post_data = self.rfile.read(content_length).decode('ascii')
-            return (content_type.lower(), post_data)
+            return json_data
         self.last_error = settings.ERROR_POST_EMPTY
-        return (None, None)
+        return None
         
 
 if __name__ == '__main__':

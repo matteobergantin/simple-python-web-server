@@ -17,10 +17,10 @@ def print_request_data(ws: AbstractWebServer):
     ws.send_header('Content-Type', 'text/plain')
     ws.end_headers()
     get_data = ws.parse_get_data()
-    post_content_type, post_data = ws.parse_post_data()
+    post_data = ws.parse_post_data()
     ws.wfile.write(bytes("OK", 'utf-8'))
     print(f"GET DATA  = {get_data}")
-    print(f"POST DATA = {post_data} ENCODED AS {post_content_type}")
+    print(f"POST DATA = {post_data} ENCODED AS {ws.headers['Content-Type']}")
 
 def handle401(ws: AbstractWebServer):
     ws.send_response(401)                           # We can also override the response code, if we want
