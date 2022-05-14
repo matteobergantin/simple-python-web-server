@@ -19,7 +19,8 @@ To specify a behaviour for specific URL paths, edit the `settings.py` file and a
 * `settings.py`: A file that contains the settings for the Web Server (more info below).
 * `utils.py`: A file that contains useful functions, most of the parsing is implemented here.
 * `views.py`: A file which implements the functions contained in the `urlpatterns` list, created in the `settings.py` file.
-* `web_server.py`: Where the server is actually implemented, this is also the file to run to start the server.
+* `web_server.py`: Where the server is actually implemented.
+* `main.py`: This the file to run to start the server
 
 # Installation
 ## Required libraries / modules
@@ -28,7 +29,7 @@ This project uses the http.server module for Python, it should be installed auto
 ## Downloading and running the Web Server
 * Clone the repository using `git clone https://github.com/matteobergantin/simple-python-web-server.git`
 * Browse to the downloaded directory with `cd simple-python-web-server`
-* Run the webserver using the command `python3 web_server.py`
+* Run the webserver using the command `python3 main.py`
 
 # Configuration
 To configure the server edit the variables in the `settings.py` file, you can change pretty much everything from there.

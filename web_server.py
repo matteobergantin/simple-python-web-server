@@ -1,11 +1,17 @@
-from http.server import ThreadingHTTPServer
 from os import listdir
-from abstract_web_server import AbstractWebServer
 from pathlib import Path
 from sys import exit
-import settings, utils, cgi
+from http.server import BaseHTTPRequestHandler
+import utils, cgi
 
-class WebServer(AbstractWebServer):
+# Global variable that identifies the settings module
+settings = None
+
+def setSettingsModule(module):
+    global settings
+    settings = module
+
+class WebServer(BaseHTTPRequestHandler):
     last_error = None
     def do_GET(self):
         self.execute_request()
@@ -13,6 +19,9 @@ class WebServer(AbstractWebServer):
         self.execute_request()
 
     def execute_request(self):
+        if settings is None:
+            print("ERROR: settings module is set to None")
+            exit(1)
         # Removing the GET paramenters
         path_with_no_get_args = self.path.split('?')[0]
 
@@ -244,18 +253,3 @@ class WebServer(AbstractWebServer):
             return json_data
         self.last_error = settings.ERROR_POST_EMPTY
         return None
-        
-
-if __name__ == '__main__':
-    if (not utils.exists(settings.HTDOCS_DIR) or not utils.isdir(settings.HTDOCS_DIR)) and settings.ALLOW_FILE_ACCESS:
-        print('ERROR: No "htdocs" folder found, aborting...')
-        exit(1)
-    ws = ThreadingHTTPServer((settings.HOSTNAME, settings.PORT), WebServer)
-    print(f"Web Server running on http://{settings.HOSTNAME}:{settings.PORT}/")
-    try:
-        ws.serve_forever()
-    except KeyboardInterrupt:
-        print("Shutting down Web Server...")    
-        ws.server_close()
-    print("Goodbye!")
-    

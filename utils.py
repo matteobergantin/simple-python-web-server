@@ -1,5 +1,5 @@
 from math import floor
-from os.path import exists, basename, isdir, isfile
+from os.path import exists, isdir, isfile, basename
 from pathlib import Path
 from inspect import getsourcefile
 from urllib.parse import unquote as urldecode, quote as urlencode
@@ -25,6 +25,9 @@ def json_encode(data: dict):
 
 def file_exists(path: str):
     return exists(path) and not isdir(path)
+
+def dir_exists(path: str):
+    return exists(path) and not isfile(path)
 
 def getFileExt(path: str):
     file_name = basename(path)
