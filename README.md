@@ -53,6 +53,7 @@ To configure the server edit the variables in the `settings.py` file.
 * `ALLOW_FILE_ACCESS`: If this variable is set to False, no file inside HTDOCS_DIR will be accessed, instead the user will encounter a 401 (Unauthorized) error
 * `DIRECTORY_LISTING`: If set to True, users trying to access a directory which DOES NOT have an index file will see a simple File Explorer instead of receiving a 404 error
 * `INDEX_FILE_NAME`: The index file name, used to tell the server where to look for an index file when a directory is requested.
+* `CONSOLE_LOGGING`: If set to False this will prevent any logging from the console.
 * `error_handlers`: This is a list of `tuple[int, callable]` where `int` is the error code (expressed as an integer) and `callable` a callable object. `callable` will be called when an error of code `int` occurs
 * `urlpatterns`: This is a list of `tuple[str, callable]` where `str` is the url path and where `callable` is the function to be called when a request happens on that path
 
