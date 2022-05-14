@@ -30,7 +30,7 @@ urlpatterns = [
     ("/sayHi", views.sayHi),                          # Visit http://HOSTNAME:PORT/sayHello to call views.sayHello
     ("/sayGoodbye", views.sayGoodbye),                      # Visit http://HOSTNAME:PORT/sayGoodbye to call views.sayGoodbye
     ("/request", views.print_request_data),                 # This will print on python's console any request data given
-    ("/send500", views.send500),                            # This will emulate a 401 error code, just to test error handling
+    ("/send500", views.send500),                            # This will emulate a 500 error code, just to test error handling
 ]
 
 
