@@ -28,7 +28,7 @@ def handle500(ws: WebServer):
     ws.send_response(500)                           # We can also override the response code, if we want
     ws.send_header('Content-Type', 'text/plain')
     ws.end_headers()
-    ws.wfile.write(bytes("This is what happens when we get a 401 error code", 'utf-8'))
+    ws.wfile.write(bytes("This is what happens when we get a 500 error code", 'utf-8'))
 
 def send500(ws: WebServer):
     ws.send_error_code(500, ws.default500)          # ws.default500 is the function to call if there is no callback function defined in error_handlers

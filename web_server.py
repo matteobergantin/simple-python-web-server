@@ -20,7 +20,7 @@ class WebServer(BaseHTTPRequestHandler):
 
     def execute_request(self):
         if settings is None:
-            print("ERROR: settings module is set to None")
+            self.log_message("ERROR: settings module is set to None")
             exit(1)
         # Removing the GET paramenters
         path_with_no_get_args = self.path.split('?')[0]
@@ -28,7 +28,7 @@ class WebServer(BaseHTTPRequestHandler):
         # Checking if the path is mapped
         for path, callback in settings.urlpatterns:
             if path_with_no_get_args == path:
-                print(f"Requested path {path_with_no_get_args} handled in function {callback.__name__} located in file {utils.getFunctionSourceFile(callback)}")
+                self.log_message(f"Requested path {path_with_no_get_args} handled in function {callback.__name__} located in file {utils.getFunctionSourceFile(callback)}")
                 callback(self)
                 return None
 
@@ -78,7 +78,7 @@ class WebServer(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-Type', 'text/html')
         self.end_headers()
-        print("Listing contents of: " + dir_path)
+        self.log_message("Listing contents of: " + dir_path)
         # Minified HTML code of a vary basic html page
         html_head = '<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=0.5"> <title>FILES LIST</title> <style>*{margin: none; padding: none; outline: none; border: none; box-shadow: none;}body{background: #272829;}#file-table{width: fit-content; min-width: 500px; height: 100%; color: white; text-align: left; font-family: sans-serif; font-size: 1rem;}#file-table, th, td{border: 2px solid #000912; border-collapse: collapse;}.table-element > *{padding: 1rem;}.table-element:hover{background: #001D2A;}.file-name{text-decoration: none;}h1{font-family: sans-serif; color: white;}</style> </head> <body> <div align="center"> <h1>Contents of ' + dir_path.split(settings.BASE_DIR)[1] + '</h1> </div><table id="file-table"> <tr class="table-element"> <th>Name</th> <th>Size</th> <th>Type</th> </tr>'
         html_tail = "</table></body></html>"
@@ -110,7 +110,7 @@ class WebServer(BaseHTTPRequestHandler):
     def send_error_code(self, code: int, default):
         for error_code, callback in settings.error_handlers:
             if error_code == code:
-                print(f"Error {error_code} handled by function: {callback.__name__} located in file {utils.getFunctionSourceFile(callback)}")
+                self.log_message(f"Error {error_code} handled by function: {callback.__name__} located in file {utils.getFunctionSourceFile(callback)}")
                 callback(self)
                 return None
         default()
@@ -153,13 +153,13 @@ class WebServer(BaseHTTPRequestHandler):
             # File does not exist or is inaccessible
             # We check if the file exists in the execute_request function
             # Therefore the file cannot be accessed
-            print("ERROR: REQUESTED FILE DOES NOT EXIST OR CANNOT BE ACCESSED")
-            print("--- FILE PATH: " + file_path)
-            print("--- SERVER REQUEST PATH: " + self.path)
+            self.log_message("ERROR: REQUESTED FILE DOES NOT EXIST OR CANNOT BE ACCESSED")
+            self.log_message("--- FILE PATH: " + file_path)
+            self.log_message("--- SERVER REQUEST PATH: " + self.path)
             self.send_error_code(500, self.default500)
             return None
 
-        print("Reading file: " + file_path)
+        self.log_message("Reading file: " + file_path)
         self.send_response(200)
         headers = utils.findCorrectHeaders(file_path)
         for header_key, header_value in headers:
@@ -168,7 +168,7 @@ class WebServer(BaseHTTPRequestHandler):
 
         if file_size == 0:
             # Don't even open the file...
-            print(f"Request {self.path} from {self.client_address[0]}: file empty, not opening it")
+            self.log_message(f"Request {self.path} from {self.client_address[0]}: file empty, not opening it")
             return None
 
         with open(file_path, 'rb') as f:
@@ -181,9 +181,9 @@ class WebServer(BaseHTTPRequestHandler):
                     self.wfile.write(bytesRead)
                 except ConnectionResetError:
                     # Connection interrupted by user
-                    print(f'ERROR ON REQUEST {self.path} FROM {self.client_address[0]}: CONNECTION INTERRUPTED BY USER')
+                    self.log_message(f'ERROR ON REQUEST {self.path} FROM {self.client_address[0]}: CONNECTION INTERRUPTED BY USER')
                     break
-        print(f'Finished reading file {file_path}')
+        self.log_message(f'Finished reading file {file_path}')
 
     def parse_get_data(self):
         # GET requests are generally structured like this
@@ -253,3 +253,6 @@ class WebServer(BaseHTTPRequestHandler):
             return json_data
         self.last_error = settings.ERROR_POST_EMPTY
         return None
+    def log_message(self, format, *args):
+        if settings.CONSOLE_LOGGING:
+            super().log_message(format, *args)
