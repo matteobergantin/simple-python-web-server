@@ -1,6 +1,5 @@
 from os import listdir
 from pathlib import Path
-from pickle import bytes_types
 from sys import exit
 from http.server import BaseHTTPRequestHandler
 import utils, cgi
