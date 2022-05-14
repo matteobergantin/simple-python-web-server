@@ -1,8 +1,8 @@
-from math import floor
-from os.path import exists, isdir, isfile, basename
-from pathlib import Path
-from inspect import getsourcefile
 from urllib.parse import unquote as urldecode, quote as urlencode
+from os.path import exists, isdir, isfile, basename
+from inspect import getsourcefile
+from pathlib import Path
+import math
 import json
 
 def json_decode(data: str):
@@ -40,7 +40,8 @@ def getFileExt(path: str):
 
 def findCorrectHeaders(path: str):
     # Finding the correct headers based on the file extension
-    filename = basename(path)
+    full_path = str(Path(path).absolute().resolve())
+    filename = basename(full_path)
     ext = getFileExt(filename)
     headers = []
     if ext in ['.html', '.css']:
@@ -132,5 +133,5 @@ def parseFileSize(file_size: int, normalize: int = 2):
     while i < len(dims) and file_size >= size_scale_factor:
         file_size /= 1024
         i += 1
-    file_size = floor(file_size * (10**normalize)) / (10**normalize)
+    file_size = math.floor(file_size * (10**normalize)) / (10**normalize)
     return f"{file_size} {dims[i]}"
