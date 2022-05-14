@@ -6,7 +6,7 @@ import views                                                # User code
 
 HOSTNAME          = "0.0.0.0"
 PORT              = 8000
-BASE_DIR          = str(Path(__file__).parent.absolute())       # Current directory
+BASE_DIR          = str(Path(__file__).parent.resolve())        # Current directory
 HTDOCS_DIR        = BASE_DIR + DIRECTORY_SEPARATOR + "htdocs"   # "htdocs" directory path
 READING_SIZE      = 1024*1024                                   # The maximum amount of bytes to read from a file in a single read() function call, set this to -1 to read until EOF
 ALLOW_FILE_ACCESS = True                                        # If a file exists in the htdocs folder, should it be possible to access to it directly?
