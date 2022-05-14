@@ -232,6 +232,9 @@ class WebServer(BaseHTTPRequestHandler):
             except KeyError:
                 self.last_error = settings.ERROR_POST_NO_BOUNDARY
                 return None
+            except TypeError:
+                # opt_dict['boundary'] is already of type bytes()
+                pass
             raw_post_data = cgi.parse_multipart(self.rfile, opt_dict)
 
             # cgi.parse_multipart will return dict[str, list]
