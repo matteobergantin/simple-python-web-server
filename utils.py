@@ -102,7 +102,7 @@ def getFunctionSourceFile(callable):
 def decode_URL_encoded_data(path: str, starting_index: int):
     if starting_index >= len(path):
         return {}
-    get_data = {}
+    url_decoded_data = {}
     raw_data = path[starting_index:].split("&")
     for raw_element in raw_data:
         if raw_element == "":
@@ -112,13 +112,13 @@ def decode_URL_encoded_data(path: str, starting_index: int):
         equal_sign_index = raw_element.find('=')
         if equal_sign_index == -1:
             # No equal sign found, the value will be set to an empty string
-            get_data[urldecode(raw_element)] = ""
+            url_decoded_data[urldecode(raw_element)] = ""
         else:
             # At least on equal sign specified, setting the correct value
             # If we have multiple equal signs we care only about the first one
             # (That's how it's implemented in Apache)
-            get_data[urldecode(raw_element[:equal_sign_index])] = urldecode(raw_element[equal_sign_index+1:])
-    return get_data
+            url_decoded_data[urldecode(raw_element[:equal_sign_index])] = urldecode(raw_element[equal_sign_index+1:])
+    return url_decoded_data
 
 def parseFileSize(file_size: int, normalize: int = 2):
     if file_size < 0:
