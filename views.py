@@ -2,7 +2,7 @@ from web_server import WebServer
 import utils
 import settings
 
-def sayHello(ws: WebServer):
+def sayHi(ws: WebServer):
     ws.send_response(200)
     ws.send_header('Content-Type', 'text/plain')
     ws.end_headers()
@@ -31,4 +31,4 @@ def handle500(ws: WebServer):
     ws.wfile.write(bytes("This is what happens when we get a 401 error code", 'utf-8'))
 
 def send500(ws: WebServer):
-    ws.send_error_code(500, ws.default500)          # ws.default401 is the function to call if there is no callback function defined in error_handlers
+    ws.send_error_code(500, ws.default500)          # ws.default500 is the function to call if there is no callback function defined in error_handlers

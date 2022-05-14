@@ -19,14 +19,14 @@ INDEX_FILE_NAME   = "index.html"                                # Index file nam
 # Where "int" is the error code (expressed as an integer) and "callable" a callable object
 # "callable" will be called when an error of code "int" occurs
 error_handlers = [
-    (401, views.handle500),                                 # This is just a test, visit http://HOSTNAME:PORT/send401 to see the behaviour of this function
+    (500, views.handle500),                                 # This is just a test, visit http://HOSTNAME:PORT/send401 to see the behaviour of this function
 ]
 
 # This must contain a list of tuples (str, callable)
 # Where "str" is the path (expressed as a str object) and "callable" a callable object
 # "callable" will be called when a request happens on the "str" path
 urlpatterns = [
-    ("/sayHello", views.sayHello),                          # Visit http://HOSTNAME:PORT/sayHello to call views.sayHello
+    ("/sayHi", views.sayHi),                          # Visit http://HOSTNAME:PORT/sayHello to call views.sayHello
     ("/sayGoodbye", views.sayGoodbye),                      # Visit http://HOSTNAME:PORT/sayGoodbye to call views.sayGoodbye
     ("/request", views.print_request_data),                 # This will print on python's console any request data given
     ("/send401", views.send500),                            # This will emulate a 401 error code, just to test error handling
