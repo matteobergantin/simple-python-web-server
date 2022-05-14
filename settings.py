@@ -12,7 +12,7 @@ READING_SIZE      = 1024*1024                                   # The maximum am
 ALLOW_FILE_ACCESS = True                                        # If a file exists in the htdocs folder, should it be possible to access to it directly?
 DIRECTORY_LISTING = True                                        # If set to True, this will allow people to have a simple interface to show files in a directory, if the index file of that directory does not exist 
 INDEX_FILE_NAME   = "index.html"                                # Index file name, "index.html" by default, used when trying to access directories
-CONSOLE_LOGGING   = False
+CONSOLE_LOGGING   = True                                        # Choose whether to log stuff on the console or not
 
 # Tell the server which function to call when an error occurs
 # Keep in mind there is a default behaviour to errors, it's not mandatory to override these methods
