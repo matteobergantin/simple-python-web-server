@@ -69,13 +69,13 @@ class WebServer(AbstractWebServer):
         self.send_response(200)
         self.send_header('Content-Type', 'text/html')
         self.end_headers()
+        print("Listing contents of: " + dir_path)
         # Minified HTML code of a vary basic html page
-        html_head = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=0.5"><title>FILES LIST</title><style>*{margin: none; padding: none; outline: none; border: none; box-shadow: none;}body{background: #272829;}#file-table{width: fit-content; min-width: 300px; height: 100%; color: white; text-align: left; font-family: sans-serif; font-size: 1rem;}.table-element > *{padding: 1rem;}.file-name{text-decoration: none;}</style></head><body><table id="file-table"><tr class="table-element"><th>Name</th><th>Size</th><th>Type</th></tr>'
+        html_head = '<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=0.5"> <title>FILES LIST</title> <style>*{margin: none; padding: none; outline: none; border: none; box-shadow: none;}body{background: #272829;}#file-table{width: fit-content; min-width: 500px; height: 100%; color: white; text-align: left; font-family: sans-serif; font-size: 1rem;}#file-table, th, td{border: 2px solid #000912; border-collapse: collapse;}.table-element > *{padding: 1rem;}.table-element:hover{background: #001D2A;}.file-name{text-decoration: none;}h1{font-family: sans-serif; color: white;}</style> </head> <body> <div align="center"> <h1>Contents of ' + dir_path.split(settings.BASE_DIR)[1] + '</h1> </div><table id="file-table"> <tr class="table-element"> <th>Name</th> <th>Size</th> <th>Type</th> </tr>'
         html_tail = "</table></body></html>"
         # The only default content is the ".." directory
-        html_body = '<tr class="table-element"><td><a class="file-name" href="..">..</a></td><td>--</td><td>DIR</td></tr>'
+        html_body = '<tr class="table-element"><td><a class="file-name" href="..">Parent Directory (..)</a></td><td>--</td><td>DIR</td></tr>'
         for entry in listdir(dir_path):
-            print(entry)
             full_entry_path = dir_path + settings.DIRECTORY_SEPARATOR + entry
             href = utils.urlencode(entry)
             parsed_size = "?"
