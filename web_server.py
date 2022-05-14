@@ -70,7 +70,18 @@ class WebServer(BaseHTTPRequestHandler):
             # This is not a file
             if utils.isdir(full_file_path):
                 # This is a directory, redirect
-                self.redirect(self.path + "/")
+                # If we requested for example /foo, where foo is a directory
+                # We want to redirect to /foo/
+                # If we requested /foo but with some get parameters set
+                # Like /foo?a=b
+                # We want to redirect to /foo/?a=b
+                get_args_pos = self.path.find('?')
+                if get_args_pos == -1:
+                    # No GET args, ez redirect
+                    self.redirect(self.path + "/")
+                else:
+                    # Some GET args, redirect and keep in mind the GET arguments
+                    self.redirect(path_with_no_get_args + "/" + self.path[get_args_pos:])
             else:
                 # This is NOT a directory NOR a file, therefore 404
                 self.send_error_code(404, self.default404)
