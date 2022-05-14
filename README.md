@@ -85,4 +85,4 @@ Here's the list of functions available through the Web Server object:
 # Additional information for deployment
 If you want to deploy your web server using [PyInstaller](https://pyinstaller.org/en/stable/) you must change the `BASE_DIR` variable (located in `settings.py`) to the current working directory (If you don't know what the directory is, call `getcwd()` from the `os` module).
 
-This because modules are "compiled" into .pyc files which are located in temporary that could be located anywhere on disk.
+This because modules are "compiled" into .pyc files which are located in temporary directories that could be located anywhere on disk.
