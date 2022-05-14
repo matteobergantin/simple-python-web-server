@@ -1,5 +1,6 @@
 from os import listdir
 from pathlib import Path
+from pickle import bytes_types
 from sys import exit
 from http.server import BaseHTTPRequestHandler
 import utils, cgi
@@ -228,13 +229,11 @@ class WebServer(BaseHTTPRequestHandler):
 
         if content_type.lower() == 'multipart/form-data':
             try:
-                opt_dict['boundary'] = bytes(opt_dict['boundary'], 'ascii')
+                if not isinstance(opt_dict['boundary'], bytes):
+                    opt_dict['boundary'] = bytes(opt_dict['boundary'], 'ascii')
             except KeyError:
                 self.last_error = settings.ERROR_POST_NO_BOUNDARY
                 return None
-            except TypeError:
-                # opt_dict['boundary'] is already of type bytes()
-                pass
             raw_post_data = cgi.parse_multipart(self.rfile, opt_dict)
 
             # cgi.parse_multipart will return dict[str, list]
