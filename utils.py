@@ -45,7 +45,7 @@ def findCorrectHeaders(path: str):
     elif ext == '.txt':
         # The MIME type text/txt does not exist
         headers.append(("Content-Type", "text/plain"))
-    elif ext == '.js':
+    elif ext in ['.js', '.map']:
         headers.append(("Content-Type", "application/javascript"))
     elif ext in ['.mp4', '.ogg', '.mpeg', '.webm']:
         headers.append(("Content-Type", f"video/{ext[1:]}"))
