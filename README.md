@@ -81,8 +81,23 @@ Here's the list of functions available through the Web Server object:
 * `broadcast_file(file_path: str)`: Sends the user the file specified in the `file_path` variable, the `Content-Type` and `Content-Length` headers are set automatically, this is the default function that gets called if the `ALLOW_FILE_ACCESS` variable is set to True.
 * `parse_get_data()`: This function, when called, returns a dict[str,str] that represents the GET data sent to the server.
 * `parse_post_data()`: This function, when called, returns a dict[str,mix] that represents the POST data passed to the server, or returns None if there is no POST data, or if an error happened, you can check the last error from the `last_error` variable in the WebServer object.
+* `get_cookies()`: This function will parse the `Cookie` header and return a dict[str,str] which represents the cookies.
+* `set_cookie(key: str, value: str, expiry_date: int = -1, path: str = '/')`: This function will set the `Set-Cookie` header, creating a cookie of key `key`, value `value`, that has access to path `path` and that expires on `expiry_date`.
+Please note that if the `expiry_date` variable is < 0, the expiration date doesn't get set. The function returns True on success and False on failure, if the function returns False, the `last_error` variable is set to a specific error value. 
+
+## Error codes
+If a function fails, the `last_error` variable in the `WebServer` object is set to specific values.
+
+Here's the list of the error codes:
+* `ERROR_POST_NO_CONTENT_TYPE`: Triggered by `parse_post_data()`, the `Content-Type` header in the request is not set.
+* `ERROR_POST_PARSE_CONTENT_LENGTH`: Triggered by `parse_post_data()`, the `Content-Length` headers is not set, and/or is not a valid integer number.
+* `ERROR_POST_NO_BOUNDARY`: Triggered by `parse_post_data()`, the POST data is encoded as `multipart/form-data` but no boundary is set.
+* `ERROR_POST_PARSE_JSON`: Triggered by `parse_post_data()`, the POST data is in JSON format, but cannot be parsed. 
+* `ERROR_POST_EMPTY`: Triggered by `parse_post_data()`, no POST data found.
+* `ERROR_COOKIE_HEADERS_CLOSED`: Triggered by `set_cookie(...)`, trying to set a cookie, but the headers have been closed already (through `end_headers()`).
+* `ERROR_COOKIE_CANNOT_CREATE`: Triggered by `set_cookie(...)`, cookie cannot be created (generic error).
 
 # Additional information for deployment
 If you want to deploy your web server using [PyInstaller](https://pyinstaller.org/en/stable/) you must change the `BASE_DIR` variable (located in `settings.py`) to the current working directory (If you don't know what the directory is, call `getcwd()` from the `os` module).
 
-This because modules are "compiled" into .pyc files which are located in temporary directories that could be located anywhere on disk.
+This because with PyInstaller modules are "compiled" into .pyc files which are located in temporary directories that could be located anywhere on disk.

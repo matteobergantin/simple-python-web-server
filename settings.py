@@ -2,8 +2,6 @@ from pathlib import Path
 from os.path import sep as DIRECTORY_SEPARATOR              # i.e. '/' on Linux and '\' on Windows
 import views                                                # User code
 
-# TODO: Implement cookie management
-
 HOSTNAME          = "0.0.0.0"
 PORT              = 8000
 BASE_DIR          = str(Path(__file__).parent.resolve())        # Current directory
@@ -40,3 +38,5 @@ ERROR_POST_PARSE_CONTENT_LENGTH = 1
 ERROR_POST_NO_BOUNDARY          = 2
 ERROR_POST_PARSE_JSON           = 3
 ERROR_POST_EMPTY                = 4
+ERROR_COOKIE_HEADERS_CLOSED     = 5
+ERROR_COOKIE_CANNOT_CREATE      = 6

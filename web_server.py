@@ -2,6 +2,7 @@ from os import listdir
 from pathlib import Path
 from sys import exit
 from http.server import BaseHTTPRequestHandler
+from http.cookies import SimpleCookie
 import utils, cgi
 
 # Global variable that identifies the settings module
@@ -265,6 +266,61 @@ class WebServer(BaseHTTPRequestHandler):
             return json_data
         self.last_error = settings.ERROR_POST_EMPTY
         return None
+
+    def get_cookies(self):
+        # This is a very basic implementation of parsing cookies
+        # How this works:
+        # The cookies are storend in the 'Cookie' header
+        # The raw request would look something like this:
+        # Cookie: key1=value1; key2=value2; key3=value3
+        # In order to parse the data I'm using the SimpleCookie() class
+        # We load the cookies in a SimpleCookie object
+        # The .items() function gives us a list of tuple[str,Morsel]
+        # Where the first value represents the Cookie Key, as a str
+        # And the second value represents a Morsel Object
+        # A Morsel object is simply a way of representing the Cookie
+        # Along with all its possible settings, like the expiry date, httponly property, the path property, ecc...
+        # However, we only care about the value of the cookie, because all the other info are stored on the browser,
+        # And we don't have access to it
+
+        if self.headers['Cookie'] is None:
+            return {}
+        cookies = SimpleCookie()
+        cookies.load(self.headers['Cookie'])
+        return {key: morsel.value for key, morsel in cookies.items()} #<-- Converting the list(tuple[str,Morsel]) in dict()
+
+    def set_cookie(self, key: str, value: str, expiry_date: int = -1, path: str = '/'):
+        if self.headers_closed:
+            self.last_error = settings.ERROR_COOKIE_HEADERS_CLOSED
+            return False
+
+        new_cookie = SimpleCookie()
+        new_cookie[key] = value
+        new_cookie[key]['path'] = path
+        if expiry_date > 0:
+            new_cookie[key]['expires'] = expiry_date
+
+        # The .output() function creates a raw header value
+        # Something like:
+        # Set-Cookie: foo=bar
+        # We want just the value, not the header
+        # So we set the header to be an empty string
+        # However, we still need to remove the first char
+        # Which will be an empty space
+
+        raw_output = new_cookie.output(header="")
+        if len(raw_output) < 1:
+            self.last_error = settings.ERROR_COOKIE_CANNOT_CREATE
+            return False
+        if raw_output[0] == ' ':
+            raw_output = raw_output[1:]
+        self.send_header('Set-Cookie', raw_output)
+        return True
+
     def log_message(self, format, *args):
         if settings.CONSOLE_LOGGING:
             super().log_message(format, *args)
+    
+    def end_headers(self):
+        self.headers_closed = True
+        return super().end_headers()
