@@ -3,3 +3,6 @@ htdocs/tests/
 
 # Cache
 __pycache__/
+
+# VSCode config
+.vscode/
