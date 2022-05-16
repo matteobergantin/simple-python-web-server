@@ -20,7 +20,7 @@ CONSOLE_LOGGING   = True                                        # Choose whether
 # Where "int" is the error code (expressed as an integer) and "callable" a callable object
 # "callable" will be called when an error of code "int" occurs
 error_handlers = [
-    (500, views.handle500),                                 # This is just a test, visit http://HOSTNAME:PORT/send401 to see the behaviour of this function
+    (500, views.handle500),                                 # This is just a test, visit http://HOSTNAME:PORT/send500 to see the behaviour of this function
 ]
 
 # This must contain a list of tuples (str, callable)
