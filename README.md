@@ -99,7 +99,7 @@ If a function fails, the `last_error` variable in the `WebServer` object is set 
 
 Here's the list of the error codes:
 * `ERROR_POST_NO_CONTENT_TYPE`: Triggered by `parse_post_data()`, the `Content-Type` header in the request is not set.
-* `ERROR_POST_PARSE_CONTENT_LENGTH`: Triggered by `parse_post_data()`, the `Content-Length` headers is not set, and/or is not a valid integer number.
+* `ERROR_POST_PARSE_CONTENT_LENGTH`: Triggered by `parse_post_data()`, the `Content-Length` headers is not set, or is not a valid integer number.
 * `ERROR_POST_NO_BOUNDARY`: Triggered by `parse_post_data()`, the POST data is encoded as `multipart/form-data` but no boundary is set.
 * `ERROR_POST_PARSE_JSON`: Triggered by `parse_post_data()`, the POST data is in JSON format, but cannot be parsed. 
 * `ERROR_POST_EMPTY`: Triggered by `parse_post_data()`, no POST data found.
