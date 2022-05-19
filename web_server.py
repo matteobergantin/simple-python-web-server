@@ -8,12 +8,14 @@ import utils, cgi
 # Global variable that identifies the settings module
 settings = None
 
-def setSettingsModule(module):
+def defineSettingsModule(module):
     global settings
     settings = module
 
 class WebServer(BaseHTTPRequestHandler):
     last_error = None
+    headers_closed = False
+
     def do_GET(self):
         self.execute_request()
     def do_POST(self):
@@ -289,16 +291,15 @@ class WebServer(BaseHTTPRequestHandler):
         cookies.load(self.headers['Cookie'])
         return {key: morsel.value for key, morsel in cookies.items()} #<-- Converting the list(tuple[str,Morsel]) in dict()
 
-    def set_cookie(self, key: str, value: str, expiry_date: int = -1, path: str = '/'):
+    def set_cookie(self, key: str, value: str, additional_data: dict = {}):
         if self.headers_closed:
             self.last_error = settings.ERROR_COOKIE_HEADERS_CLOSED
             return False
 
         new_cookie = SimpleCookie()
         new_cookie[key] = value
-        new_cookie[key]['path'] = path
-        if expiry_date > 0:
-            new_cookie[key]['expires'] = expiry_date
+        for k in additional_data.keys():
+            new_cookie[key][k] = additional_data[k]
 
         # The .output() function creates a raw header value
         # Something like:

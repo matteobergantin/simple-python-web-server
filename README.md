@@ -82,8 +82,17 @@ Here's the list of functions available through the Web Server object:
 * `parse_get_data()`: This function, when called, returns a dict[str,str] that represents the GET data sent to the server.
 * `parse_post_data()`: This function, when called, returns a dict[str,mix] that represents the POST data passed to the server, or returns None if there is no POST data, or if an error happened, you can check the last error from the `last_error` variable in the WebServer object.
 * `get_cookies()`: This function will parse the `Cookie` header and return a dict[str,str] which represents the cookies.
-* `set_cookie(key: str, value: str, expiry_date: int = -1, path: str = '/')`: This function will set the `Set-Cookie` header, creating a cookie of key `key`, value `value`, that has access to path `path` and that expires on `expiry_date`.
-Please note that if the `expiry_date` variable is < 0, the expiration date doesn't get set. The function returns True on success and False on failure, if the function returns False, the `last_error` variable is set to a specific error value. 
+* `set_cookie(key: str, value: str, additional_data: dict = {})`: This function will set the `Set-Cookie` header, creating a cookie of key `key`, value `value`. The `data` dictionary represents a dictionary which contains additional data regarding the cookie.
+The valid [RFC 2109](https://datatracker.ietf.org/doc/html/rfc2109.html) attributes that the `data` dict can have are the following:
+    * `expires`: The date of expiration of the cookie.
+    * `path`: path that must exist in the requested URL in order to send the Cookie header.
+    * `comment`: this Cookie attribute allows an origin server to document its intended use of a cookie.
+    * `domain`: The Domain attribute specifies the domain for which the cookie is valid.
+    * `max-age`: The Max-Age attribute defines the lifetime of the cookie, in seconds, therefore it must be an integer.
+    * `secure`: The Secure attribute (with no value) directs the user agent to use only (unspecified) secure means to contact the origin server whenever it sends back this cookie. The user agent (possibly under the user's control) may determine what level of security it considers appropriate for "secure" cookies.
+    * `version`: The Version attribute, a decimal integer, identifies to which version of the state management specification the cookie conforms.
+    * `httponly`: The attribute httponly specifies that the cookie is only transferred in HTTP requests, and is not accessible through JavaScript. This is intended to mitigate some forms of cross-site scripting.
+    * `samesite`: The attribute samesite specifies that the browser is not allowed to send the cookie along with cross-site requests. This helps to mitigate CSRF attacks. Valid values for this attribute are “Strict” and “Lax”.
 
 ## Error codes
 If a function fails, the `last_error` variable in the `WebServer` object is set to specific values.
