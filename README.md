@@ -56,6 +56,10 @@ To configure the server edit the variables in the `settings.py` file.
 * `CONSOLE_LOGGING`: If set to False this will prevent any logging from the console.
 * `error_handlers`: This is a list of `tuple[int, callable]` where `int` is the error code (expressed as an integer) and `callable` a callable object. `callable` will be called when an error of code `int` occurs
 * `urlpatterns`: This is a list of `tuple[str, callable]` where `str` is the url path and where `callable` is the function to be called when a request happens on that path
+* `ENABLE_HTTPS`: Sets whether to enable HTTPS or not,
+* `HTTPS_PRIV_KEY`: Path to the private key of the server.
+* `HTTPS_CERTIFICATE`: Path to the certificate of the server.
+* `SSL_PROTOCOL`: The encryption protocol for HTTPS, default value is `ssl.PROTOCOL_TLS_SERVER`.
 
 ## Testing the Web Server
 

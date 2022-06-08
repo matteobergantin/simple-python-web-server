@@ -1,6 +1,7 @@
 from pathlib import Path
 from os.path import sep as DIRECTORY_SEPARATOR              # i.e. '/' on Linux and '\' on Windows
 import views                                                # User code
+import ssl                                                  # Needed for SSL integration
 
 HOSTNAME          = "0.0.0.0"
 PORT              = 8000
@@ -11,6 +12,13 @@ ALLOW_FILE_ACCESS = True                                        # If a file exis
 DIRECTORY_LISTING = True                                        # If set to True, this will allow people to have a simple interface to show files in a directory, if the index file of that directory does not exist 
 INDEX_FILE_NAME   = "index.html"                                # Index file name, "index.html" by default, used when trying to access directories
 CONSOLE_LOGGING   = True                                        # Choose whether to log stuff on the console or not
+ENABLE_HTTPS      = False                                       # Choose whether to enable HTTPS on the server
+
+# If ENABLE_HTTPS is True, please set these variables accordingly
+HTTPS_PRIV_KEY    = BASE_DIR + DIRECTORY_SEPARATOR + "ssl" + DIRECTORY_SEPARATOR + "privkey.pem"
+HTTPS_CERTIFICATE = BASE_DIR + DIRECTORY_SEPARATOR + "ssl" + DIRECTORY_SEPARATOR + "cert.pem"
+SSL_PROTOCOL      = ssl.PROTOCOL_TLS_SERVER                     # Default protocol
+
 
 # Tell the server which function to call when an error occurs
 # Keep in mind there is a default behaviour to errors, it's not mandatory to override these methods

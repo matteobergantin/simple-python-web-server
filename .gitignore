@@ -6,3 +6,6 @@ __pycache__/
 
 # VSCode config
 .vscode/
+
+# Self-signed HTTPS certificate && private key
+ssl/*
