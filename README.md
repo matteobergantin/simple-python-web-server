@@ -69,13 +69,11 @@ To test backend code you can go to `http://localhost:8000/sayHi` or to `http://l
 
 Additionally, to check if request parsing works you can perform any requests on `http://localhost/request` and this will print the request data (both GET and POST) on the Python shell.
 
-## Binding a URL path to a custom function
-Open the `settings.py` file and add an entry to the `urlpatterns` list object.
+## Binding a URL path to a function
+Binding a path is fairly easy, just import the file `decorator.py`, which contains two decorators, one to handle errors and one to actually bind a function to a path.
+Once you have declared all the functions needed through the decorators, import the files in which the decorator is used inside the file `includes.py`.
 
-An entry is composed of a tuple[str,callable], the "str" refers to the URL path and "callable" refers to a function to call when a connection on that path happens.
-The function will get the whole WebServer object as an argument.
-
-Again, you can check the file `views.py` for examples.
+To see actual examples of decorator usage, check the file `views.py` and the file `includes.py`.
 
 ## Web Server functions
 Here's the list of functions available through the Web Server object:

@@ -2,6 +2,7 @@ from http.server import ThreadingHTTPServer
 from web_server import WebServer, defineSettingsModule
 from sys import exit
 import settings
+import includes
 import utils
 import ssl
 
@@ -13,9 +14,7 @@ if __name__ == '__main__':
         exit(1)
     ws = ThreadingHTTPServer((settings.HOSTNAME, settings.PORT), WebServer)
     ws_url = f"http{'s' if settings.ENABLE_HTTPS else ''}://{settings.HOSTNAME}"
-    if not settings.ENABLE_HTTPS and settings.PORT != 80:
-        ws_url += f":{settings.PORT}"
-    elif settings.ENABLE_HTTPS and settings.PORT != 443:
+    if (not settings.ENABLE_HTTPS and settings.PORT != 80) or (settings.ENABLE_HTTPS and settings.PORT != 443):
         ws_url += f":{settings.PORT}"
     ws_url += '/'
 

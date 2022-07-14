@@ -1,6 +1,5 @@
 from pathlib import Path
 from os.path import sep as DIRECTORY_SEPARATOR              # i.e. '/' on Linux and '\' on Windows
-import views                                                # User code
 import ssl                                                  # Needed for SSL integration
 
 HOSTNAME          = "0.0.0.0"
@@ -26,17 +25,12 @@ SSL_PROTOCOL      = ssl.PROTOCOL_TLS_SERVER                     # Default protoc
 # Where "int" is the error code (expressed as an integer) and "callable" a callable object
 # "callable" will be called when an error of code "int" occurs
 error_handlers = [
-    (500, views.handle500),                                 # This is just a test, visit http://HOSTNAME:PORT/send500 to see the behaviour of this function
 ]
 
 # This must contain a list of tuples (str, callable)
 # Where "str" is the path (expressed as a str object) and "callable" a callable object
 # "callable" will be called when a request happens on the "str" path
 urlpatterns = [
-    ("/sayHi", views.sayHi),                          # Visit http://HOSTNAME:PORT/sayHello to call views.sayHello
-    ("/sayGoodbye", views.sayGoodbye),                      # Visit http://HOSTNAME:PORT/sayGoodbye to call views.sayGoodbye
-    ("/request", views.print_request_data),                 # This will print on python's console any request data given
-    ("/send500", views.send500),                            # This will emulate a 500 error code, just to test error handling
 ]
 
 
