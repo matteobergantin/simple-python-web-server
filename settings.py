@@ -19,6 +19,8 @@ HTTPS_CERTIFICATE = BASE_DIR + DIRECTORY_SEPARATOR + "ssl" + DIRECTORY_SEPARATOR
 SSL_PROTOCOL      = ssl.PROTOCOL_TLS_SERVER                     # Default protocol
 
 
+# EDIT: Please don't change "error_handlers" and "urlpatterns" directly, use the decorators instead
+
 # Tell the server which function to call when an error occurs
 # Keep in mind there is a default behaviour to errors, it's not mandatory to override these methods
 # This must contain a list of tuples (int, callable)
